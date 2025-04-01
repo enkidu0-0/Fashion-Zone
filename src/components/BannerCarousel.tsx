@@ -23,7 +23,7 @@ const BannerCarousel = () => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative rounded-lg overflow-hidden shadow-md my-4">
       <div className="overflow-hidden h-48 md:h-64 lg:h-80">
         <div
           className="flex transition-transform duration-500 ease-in-out h-full"
@@ -45,13 +45,13 @@ const BannerCarousel = () => {
         </div>
       </div>
       <button
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md"
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white/90 transition-colors"
         onClick={prevSlide}
       >
         <ChevronLeft className="w-5 h-5 text-flipkart-blue" />
       </button>
       <button
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md"
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white/90 transition-colors"
         onClick={nextSlide}
       >
         <ChevronRight className="w-5 h-5 text-flipkart-blue" />
