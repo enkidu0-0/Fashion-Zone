@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const CategoryNav = () => {
   return (
-    <div className="bg-white shadow-sm sticky top-0 z-10">
+    <div className="bg-white shadow-sm sticky top-0 z-40">
       <div className="container mx-auto">
         <div className="flex justify-between overflow-x-auto py-4 px-4 gap-2">
           {categories.map((category) => (

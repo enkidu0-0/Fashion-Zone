@@ -42,7 +42,7 @@ const Header = () => {
               <span className="hidden md:inline">Login</span>
               <ChevronDown className="w-4 h-4" />
             </div>
-            <div className="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white text-flipkart-text-primary rounded shadow-md z-10">
+            <div className="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white text-flipkart-text-primary rounded shadow-md z-50">
               <div className="p-3 border-b">
                 <div className="flex justify-between">
                   <span>New Customer?</span>
@@ -74,7 +74,7 @@ const Header = () => {
               <span className="hidden md:inline">More</span>
               <ChevronDown className="w-4 h-4" />
             </div>
-            <div className="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white text-flipkart-text-primary rounded shadow-md z-10">
+            <div className="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white text-flipkart-text-primary rounded shadow-md z-50">
               <ul className="py-2">
                 <li className="px-4 py-2 hover:bg-gray-100">
                   <Link to="/notification-preferences" className="flex items-center gap-2">
