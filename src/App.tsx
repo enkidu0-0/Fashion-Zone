@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 import CategoryPage from "./pages/CategoryPage";
+import Login from "./pages/Login";
+import LocationEnabler from "./components/LocationEnabler";
 
 const queryClient = new QueryClient();
 
@@ -17,10 +19,13 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <LocationEnabler />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/categories/:categoryName" element={<CategoryPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
