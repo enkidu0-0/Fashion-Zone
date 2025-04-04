@@ -12,7 +12,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-2.5 flex items-center">
         {/* Logo */}
         <Link to="/" className="mr-4 flex flex-col">
-          <span className="text-xl font-bold">Fashion Grown</span>
+          <span className="text-xl font-bold">Fashion Zone</span>
           <span className="text-xs text-flipkart-yellow flex items-center">
             Explorer Plus <ChevronDown className="w-3 h-3 ml-1" />
           </span>
@@ -68,7 +68,6 @@ const Header = () => {
               </ul>
             </div>
           </div>
-          <Link to="/become-seller" className="hidden md:block">Become a Seller</Link>
           <div className="relative group cursor-pointer">
             <div className="flex items-center gap-1">
               <span className="hidden md:inline">More</span>

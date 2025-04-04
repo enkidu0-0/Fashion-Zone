@@ -12,9 +12,9 @@ const Footer = () => {
               <li><Link to="/contact">Contact Us</Link></li>
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/careers">Careers</Link></li>
-              <li><Link to="/stories">Fashion Grown Stories</Link></li>
+              <li><Link to="/stories">Fashion Zone Stories</Link></li>
               <li><Link to="/wholesale">Press</Link></li>
-              <li><Link to="/wholesale">Fashion Grown Wholesale</Link></li>
+              <li><Link to="/wholesale">Fashion Zone Wholesale</Link></li>
             </ul>
           </div>
           <div>
@@ -50,9 +50,6 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between">
           <div className="flex flex-col md:flex-row gap-4 mb-4 md:mb-0">
             <div className="flex items-center gap-2">
-              <span className="text-yellow-400">Sell On Fashion Grown</span>
-            </div>
-            <div className="flex items-center gap-2">
               <span className="text-yellow-400">Advertise</span>
             </div>
             <div className="flex items-center gap-2">
@@ -63,7 +60,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="text-gray-400 text-sm">
-            © 2023 Fashion Grown
+            © 2023 Fashion Zone
           </div>
         </div>
       </div>
