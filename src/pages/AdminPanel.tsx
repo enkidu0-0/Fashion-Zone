@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   BarChart3, 
@@ -21,8 +20,10 @@ import {
   RefreshCw,
   Download,
   ChevronLeft,
-  Shield
+  Shield,
+  Bell
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
@@ -52,6 +53,7 @@ import {
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [accessLogs, setAccessLogs] = useState<{time: string; device: string; ip: string}[]>([]);
+  const navigate = useNavigate();
   
   useEffect(() => {
     // Simulate access logs data
