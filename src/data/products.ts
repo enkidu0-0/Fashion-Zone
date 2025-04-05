@@ -1,6 +1,7 @@
 
 import { Product, Category, Banner } from "../types";
 
+// Initial products data
 export const products: Product[] = [
   {
     id: 1,
@@ -45,50 +46,6 @@ export const products: Product[] = [
     rating: 4.4,
     ratingCount: 1243,
     category: "hoodies"
-  },
-  {
-    id: 5,
-    title: "Men's Formal Shirt White",
-    price: 599,
-    originalPrice: 1199,
-    discountPercentage: 50,
-    image: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    rating: 4.1,
-    ratingCount: 2345,
-    category: "shirts"
-  },
-  {
-    id: 6,
-    title: "Women's Skinny Jeans Dark Blue",
-    price: 999,
-    originalPrice: 1999,
-    discountPercentage: 50,
-    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    rating: 4.3,
-    ratingCount: 3467,
-    category: "jeans"
-  },
-  {
-    id: 7,
-    title: "Kids Cartoon Print T-shirt",
-    price: 299,
-    originalPrice: 599,
-    discountPercentage: 50,
-    image: "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    rating: 4.5,
-    ratingCount: 1234,
-    category: "kids"
-  },
-  {
-    id: 8,
-    title: "Men's Casual Hoodie Black",
-    price: 899,
-    originalPrice: 1799,
-    discountPercentage: 50,
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    rating: 4.2,
-    ratingCount: 2346,
-    category: "hoodies"
   }
 ];
 
@@ -125,6 +82,7 @@ export const banners: Banner[] = [
   }
 ];
 
+// This function is now handled by the ProductStore
 export const productsByCategory = (category: string) => {
   return products.filter(product => product.category === category);
 };

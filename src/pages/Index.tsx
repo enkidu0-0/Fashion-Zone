@@ -1,27 +1,29 @@
 
 import { useState, useEffect } from "react";
-import { products, productsByCategory } from "../data/products";
 import Header from "../components/Header";
 import CategoryNav from "../components/CategoryNav";
 import BannerCarousel from "../components/BannerCarousel";
 import DealsSection from "../components/DealsSection";
 import ProductSection from "../components/ProductSection";
 import Footer from "../components/Footer";
+import { useProductStore } from "../store/ProductStore";
 
 const Index = () => {
-  // Initialize categories with products
+  // Use product store instead of direct imports
+  const { products, getProductsByCategory } = useProductStore();
+  
   const [tshirts, setTshirts] = useState<typeof products>([]);
   const [hoodies, setHoodies] = useState<typeof products>([]);
   const [jeans, setJeans] = useState<typeof products>([]);
   const [dresses, setDresses] = useState<typeof products>([]);
 
   useEffect(() => {
-    // Populate products by categories
-    setTshirts(productsByCategory("tshirts"));
-    setHoodies(productsByCategory("hoodies"));
-    setJeans(productsByCategory("jeans"));
-    setDresses(productsByCategory("dresses"));
-  }, []);
+    // Populate products by categories using the store
+    setTshirts(getProductsByCategory("tshirts"));
+    setHoodies(getProductsByCategory("hoodies"));
+    setJeans(getProductsByCategory("jeans"));
+    setDresses(getProductsByCategory("dresses"));
+  }, [products, getProductsByCategory]);
 
   return (
     <div className="min-h-screen flex flex-col">
