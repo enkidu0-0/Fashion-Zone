@@ -9,6 +9,9 @@ export type Product = {
   rating: number;
   ratingCount: number;
   category: string;
+  description?: string;
+  stock?: number;
+  sku?: string;
 };
 
 export type Category = {

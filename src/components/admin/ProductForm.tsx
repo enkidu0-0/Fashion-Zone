@@ -1,7 +1,8 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useProductStore } from "@/store/ProductStore";
 import { Product } from "@/types";
@@ -12,6 +13,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 const CATEGORIES = ["tshirts", "hoodies", "jeans", "dresses", "shirts", "kids"];
 
@@ -32,21 +34,34 @@ const ProductForm = ({
       originalPrice: 0,
       discountPercentage: 0,
       image: "",
-      rating: 0,
+      rating: 4.0,
       ratingCount: 0,
-      category: "tshirts"
+      category: "tshirts",
+      description: "",
+      stock: 10
     }
   );
 
+  // Calculate discount percentage when original price or price changes
+  useEffect(() => {
+    if (formData.originalPrice && formData.price) {
+      const discountPercentage = ((formData.originalPrice - formData.price) / formData.originalPrice) * 100;
+      setFormData(prev => ({
+        ...prev,
+        discountPercentage: Math.round(discountPercentage)
+      }));
+    }
+  }, [formData.originalPrice, formData.price]);
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     let parsedValue: string | number = value;
     
     // Parse numeric values
-    if (["price", "originalPrice", "discountPercentage", "rating", "ratingCount"].includes(name)) {
-      parsedValue = parseFloat(value);
+    if (["price", "originalPrice", "discountPercentage", "rating", "ratingCount", "stock"].includes(name)) {
+      parsedValue = value === "" ? 0 : parseFloat(value);
     }
     
     setFormData({
@@ -62,23 +77,39 @@ const ProductForm = ({
     });
   };
 
+  const generateSKU = () => {
+    const category = formData.category?.substring(0, 3).toUpperCase() || 'PRD';
+    const timestamp = new Date().getTime().toString().substr(-6);
+    return `${category}-${timestamp}`;
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    // Calculate discount percentage if not provided
-    if (!formData.discountPercentage && formData.originalPrice && formData.price) {
-      const discount = ((formData.originalPrice - formData.price) / formData.originalPrice) * 100;
-      formData.discountPercentage = Math.round(discount);
-    }
-    
     // Ensure all required fields are present
-    if (!formData.title || !formData.price || !formData.image || !formData.category) {
+    if (!formData.title || !formData.price || !formData.originalPrice || !formData.image || !formData.category) {
       toast({
         title: "Error",
         description: "Please fill all required fields",
         variant: "destructive"
       });
       return;
+    }
+    
+    // If discount percentage is not provided or calculated
+    if (!formData.discountPercentage && formData.originalPrice && formData.price) {
+      const discount = ((formData.originalPrice - formData.price) / formData.originalPrice) * 100;
+      formData.discountPercentage = Math.round(discount);
+    }
+    
+    // Generate SKU for new products if not already set
+    if (!product && !formData.sku) {
+      formData.sku = generateSKU();
+    }
+    
+    // Set default stock if not provided
+    if (formData.stock === undefined) {
+      formData.stock = 10;
     }
     
     if (product) {
@@ -103,9 +134,11 @@ const ProductForm = ({
         originalPrice: 0,
         discountPercentage: 0,
         image: "",
-        rating: 0,
+        rating: 4.0,
         ratingCount: 0,
-        category: "tshirts"
+        category: "tshirts",
+        description: "",
+        stock: 10
       });
     }
     
@@ -117,9 +150,9 @@ const ProductForm = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+        <Label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Product Title*
-        </label>
+        </Label>
         <Input
           id="title"
           name="title"
@@ -130,42 +163,118 @@ const ProductForm = ({
         />
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <Label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Product Description
+        </Label>
+        <Textarea
+          id="description"
+          name="description"
+          value={formData.description || ""}
+          onChange={handleChange}
+          placeholder="Product description"
+          rows={3}
+        />
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-            Sale Price*
-          </label>
-          <Input
-            id="price"
-            name="price"
-            type="number"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="Sale price"
-            required
-          />
+          <Label htmlFor="originalPrice" className="block text-sm font-medium text-gray-700">
+            Original Price*
+          </Label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+            <Input
+              id="originalPrice"
+              name="originalPrice"
+              type="number"
+              value={formData.originalPrice}
+              onChange={handleChange}
+              placeholder="Original price"
+              className="pl-7"
+              required
+            />
+          </div>
         </div>
         
         <div>
-          <label htmlFor="originalPrice" className="block text-sm font-medium text-gray-700">
-            Original Price*
-          </label>
+          <Label htmlFor="price" className="block text-sm font-medium text-gray-700">
+            Sale Price*
+          </Label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+            <Input
+              id="price"
+              name="price"
+              type="number"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Sale price"
+              className="pl-7"
+              required
+            />
+          </div>
+        </div>
+        
+        <div>
+          <Label htmlFor="discountPercentage" className="block text-sm font-medium text-gray-700">
+            Discount %
+          </Label>
           <Input
-            id="originalPrice"
-            name="originalPrice"
+            id="discountPercentage"
+            name="discountPercentage"
             type="number"
-            value={formData.originalPrice}
+            value={formData.discountPercentage}
             onChange={handleChange}
-            placeholder="Original price"
+            placeholder="Discount percentage"
+            readOnly
+          />
+          <p className="text-xs text-gray-500 mt-1">Auto-calculated from prices</p>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="category" className="block text-sm font-medium text-gray-700">
+            Category*
+          </Label>
+          <Select 
+            value={formData.category} 
+            onValueChange={handleCategoryChange}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              {CATEGORIES.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <div>
+          <Label htmlFor="stock" className="block text-sm font-medium text-gray-700">
+            Stock Available*
+          </Label>
+          <Input
+            id="stock"
+            name="stock"
+            type="number"
+            value={formData.stock}
+            onChange={handleChange}
+            placeholder="Available stock"
             required
           />
         </div>
       </div>
       
       <div>
-        <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+        <Label htmlFor="image" className="block text-sm font-medium text-gray-700">
           Image URL*
-        </label>
+        </Label>
         <Input
           id="image"
           name="image"
@@ -174,6 +283,9 @@ const ProductForm = ({
           placeholder="Image URL"
           required
         />
+        <p className="text-xs text-gray-500 mt-1">
+          Provide a URL to an image (recommended size: 500x500px)
+        </p>
         {formData.image && (
           <div className="mt-2">
             <img 
@@ -189,32 +301,11 @@ const ProductForm = ({
         )}
       </div>
       
-      <div>
-        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-          Category*
-        </label>
-        <Select 
-          value={formData.category} 
-          onValueChange={handleCategoryChange}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            {CATEGORIES.map((category) => (
-              <SelectItem key={category} value={category}>
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
+          <Label htmlFor="rating" className="block text-sm font-medium text-gray-700">
             Rating (0-5)
-          </label>
+          </Label>
           <Input
             id="rating"
             name="rating"
@@ -229,9 +320,9 @@ const ProductForm = ({
         </div>
         
         <div>
-          <label htmlFor="ratingCount" className="block text-sm font-medium text-gray-700">
+          <Label htmlFor="ratingCount" className="block text-sm font-medium text-gray-700">
             Rating Count
-          </label>
+          </Label>
           <Input
             id="ratingCount"
             name="ratingCount"
@@ -242,6 +333,21 @@ const ProductForm = ({
           />
         </div>
       </div>
+      
+      {formData.sku && (
+        <div>
+          <Label htmlFor="sku" className="block text-sm font-medium text-gray-700">
+            SKU
+          </Label>
+          <Input
+            id="sku"
+            name="sku"
+            value={formData.sku}
+            readOnly
+            className="bg-gray-50"
+          />
+        </div>
+      )}
       
       <Button type="submit" className="bg-flipkart-blue w-full">
         {product ? "Update Product" : "Add Product"}

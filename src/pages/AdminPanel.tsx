@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   BarChart3, 
@@ -29,21 +28,12 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
   DropdownMenu,
@@ -68,24 +58,15 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useProductStore } from "../store/ProductStore";
-import ProductForm from "../components/admin/ProductForm";
-import { Product } from "../types";
 import { useToast } from "@/hooks/use-toast";
+import ProductsManager from "../components/admin/ProductsManager";
 
 const AdminPanel = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("products");
   const [accessLogs, setAccessLogs] = useState<{time: string; device: string; ip: string}[]>([]);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState<number | null>(null);
-  const itemsPerPage = 10;
   
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { products, deleteProduct } = useProductStore();
   
   useEffect(() => {
     // Simulate access logs data
@@ -107,38 +88,6 @@ const AdminPanel = () => {
       ...prev
     ]);
   }, []);
-
-  const handleDeleteProduct = (id: number) => {
-    setProductToDelete(id);
-    setIsDeleteDialogOpen(true);
-  };
-
-  const confirmDeleteProduct = () => {
-    if (productToDelete !== null) {
-      deleteProduct(productToDelete);
-      toast({
-        title: "Success",
-        description: "Product deleted successfully"
-      });
-      setIsDeleteDialogOpen(false);
-      setProductToDelete(null);
-    }
-  };
-
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct(product);
-    setIsFormOpen(true);
-  };
-
-  const filteredProducts = products.filter(product => 
-    product.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const currentProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   const renderDashboard = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -212,201 +161,7 @@ const AdminPanel = () => {
   );
 
   const renderProducts = () => (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-      <div className="p-6 border-b border-gray-100">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Products</h2>
-          <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-flipkart-blue">
-                <Plus className="w-4 h-4 mr-1" />
-                Add New Product
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingProduct ? "Edit Product" : "Add New Product"}
-                </DialogTitle>
-              </DialogHeader>
-              <ProductForm 
-                product={editingProduct || undefined} 
-                onSubmit={() => {
-                  setIsFormOpen(false);
-                  setEditingProduct(null);
-                }}
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
-        <div className="mt-4 flex flex-col sm:flex-row gap-4">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input 
-              placeholder="Search products..." 
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[50px]">#</TableHead>
-            <TableHead>Product</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {currentProducts.length > 0 ? (
-            currentProducts.map((product, index) => (
-              <TableRow key={product.id}>
-                <TableCell>{(currentPage - 1) * itemsPerPage + index + 1}</TableCell>
-                <TableCell className="font-medium">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gray-100 rounded overflow-hidden">
-                      <img 
-                        src={product.image} 
-                        alt={product.title} 
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "https://placehold.co/100?text=No+Image";
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <p className="font-medium line-clamp-2">{product.title}</p>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="capitalize">{product.category}</TableCell>
-                <TableCell>₹{product.price}</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleEditProduct(product)}
-                    >
-                      Edit
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="text-red-500"
-                      onClick={() => handleDeleteProduct(product.id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={5} className="text-center py-8 text-gray-500">
-                No products found
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      
-      {totalPages > 0 && (
-        <div className="p-4 border-t border-gray-100 flex items-center justify-between">
-          <div className="text-sm text-gray-500">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} products
-          </div>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                  className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-              
-              {Array.from({ length: Math.min(3, totalPages) }).map((_, i) => {
-                let pageNumber: number;
-                
-                if (totalPages <= 3) {
-                  pageNumber = i + 1;
-                } else if (currentPage <= 2) {
-                  pageNumber = i + 1;
-                } else if (currentPage >= totalPages - 1) {
-                  pageNumber = totalPages - 2 + i;
-                } else {
-                  pageNumber = currentPage - 1 + i;
-                }
-                
-                return (
-                  <PaginationItem key={pageNumber}>
-                    <PaginationLink 
-                      isActive={currentPage === pageNumber}
-                      onClick={() => setCurrentPage(pageNumber)}
-                    >
-                      {pageNumber}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
-              
-              {totalPages > 3 && currentPage < totalPages - 1 && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-              
-              {totalPages > 3 && currentPage < totalPages - 1 && (
-                <PaginationItem>
-                  <PaginationLink onClick={() => setCurrentPage(totalPages)}>
-                    {totalPages}
-                  </PaginationLink>
-                </PaginationItem>
-              )}
-              
-              <PaginationItem>
-                <PaginationNext 
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                  className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
-      
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Confirm Delete</DialogTitle>
-          </DialogHeader>
-          <p className="text-gray-500">
-            Are you sure you want to delete this product? This action cannot be undone.
-          </p>
-          <div className="flex justify-end gap-3 mt-4">
-            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button 
-              variant="destructive" 
-              onClick={confirmDeleteProduct}
-            >
-              Delete
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+    <ProductsManager />
   );
   
   const renderOrders = () => (
