@@ -1,24 +1,24 @@
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CategoryNav from "../components/CategoryNav";
 import ProductCard from "../components/ProductCard";
-import { productsByCategory } from "../data/products";
 import { ChevronDown, Filter } from "lucide-react";
+import { useProductStore } from "../store/ProductStore";
 
 const CategoryPage = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
   const [products, setProducts] = useState<any[]>([]);
   const [sortBy, setSortBy] = useState("popularity");
   const [showFilters, setShowFilters] = useState(false);
+  const { getProductsByCategory } = useProductStore();
 
   useEffect(() => {
     if (categoryName) {
-      setProducts(productsByCategory(categoryName));
+      setProducts(getProductsByCategory(categoryName));
     }
-  }, [categoryName]);
+  }, [categoryName, getProductsByCategory]);
 
   return (
     <div className="min-h-screen flex flex-col">
