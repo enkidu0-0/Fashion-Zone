@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import ProductForm from "./ProductForm";
 import ProductsTable from "./ProductsTable";

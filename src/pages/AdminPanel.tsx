@@ -57,6 +57,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useProductStore } from "../store/ProductStore";
 import { useToast } from "@/hooks/use-toast";
 import ProductsManager from "../components/admin/ProductsManager";
@@ -67,6 +75,7 @@ const AdminPanel = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { products } = useProductStore();
   
   useEffect(() => {
     // Simulate access logs data
