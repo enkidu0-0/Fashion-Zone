@@ -8,7 +8,7 @@ export type Product = {
   image: string;
   rating: number;
   ratingCount: number;
-  category: string;
+  category: string;  // Now can include 'kids' as a category
   description?: string;
   stock?: number;
   sku?: string;

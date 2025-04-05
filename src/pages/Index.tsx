@@ -16,6 +16,7 @@ const Index = () => {
   const [hoodies, setHoodies] = useState<typeof products>([]);
   const [jeans, setJeans] = useState<typeof products>([]);
   const [dresses, setDresses] = useState<typeof products>([]);
+  const [kids, setKids] = useState<typeof products>([]);
 
   useEffect(() => {
     // Populate products by categories using the store
@@ -23,6 +24,7 @@ const Index = () => {
     setHoodies(getProductsByCategory("hoodies"));
     setJeans(getProductsByCategory("jeans"));
     setDresses(getProductsByCategory("dresses"));
+    setKids(getProductsByCategory("kids"));
   }, [products, getProductsByCategory]);
 
   return (
@@ -63,6 +65,14 @@ const Index = () => {
               title="Dresses" 
               products={dresses} 
               viewAllLink="/categories/dresses" 
+            />
+          )}
+          
+          {kids.length > 0 && (
+            <ProductSection 
+              title="Kids Collection" 
+              products={kids} 
+              viewAllLink="/categories/kids" 
             />
           )}
         </div>

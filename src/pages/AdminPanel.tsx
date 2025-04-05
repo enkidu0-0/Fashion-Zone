@@ -236,6 +236,111 @@ const AdminPanel = () => {
     </div>
   );
 
+  const renderPromotions = () => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-8 text-center">
+      <Tags className="w-16 h-16 mx-auto text-gray-300 mb-4" />
+      <h3 className="text-lg font-medium mb-2">Promotions</h3>
+      <p className="text-gray-500">No active promotions available</p>
+      <Button className="mt-4 bg-flipkart-blue">Create New Promotion</Button>
+    </div>
+  );
+
+  const renderReports = () => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-8">
+      <div className="flex justify-between items-center mb-8">
+        <h3 className="text-lg font-medium">Sales Reports</h3>
+        <div className="flex gap-2">
+          <Button variant="outline" className="flex items-center gap-1">
+            <Calendar className="w-4 h-4" />
+            <span>Date Range</span>
+          </Button>
+          <Button variant="outline" className="flex items-center gap-1">
+            <Download className="w-4 h-4" />
+            <span>Export</span>
+          </Button>
+        </div>
+      </div>
+      <div className="h-64 bg-gray-50 rounded-md flex items-center justify-center mb-8">
+        <AreaChart className="w-12 h-12 text-gray-300" />
+        <span className="ml-2 text-gray-400">No sales data available</span>
+      </div>
+    </div>
+  );
+
+  const renderSettings = () => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-8">
+      <h3 className="text-lg font-medium mb-6">Admin Settings</h3>
+      
+      <div className="space-y-6">
+        <div className="border-b pb-6">
+          <h4 className="font-medium mb-4">General Settings</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Store Name</label>
+              <Input defaultValue="Flipkart Clone" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Currency</label>
+              <Input defaultValue="₹ (INR)" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="border-b pb-6">
+          <h4 className="font-medium mb-4">Notification Settings</h4>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span>Email notifications</span>
+              <Button variant="outline" size="sm">Configure</Button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Order alerts</span>
+              <Button variant="outline" size="sm">Configure</Button>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <Button className="bg-flipkart-blue">Save Settings</Button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderPaymentHistory = () => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="p-6 border-b border-gray-100">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold">Payment History</h2>
+          <Button variant="outline" className="flex items-center gap-1">
+            <Download className="w-4 h-4" />
+            <span>Export</span>
+          </Button>
+        </div>
+        <p className="text-gray-500 mt-2">View all transaction records</p>
+      </div>
+      
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Transaction ID</TableHead>
+            <TableHead>Date</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+              No payment history available
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
@@ -302,6 +407,32 @@ const AdminPanel = () => {
               </li>
               <li>
                 <button 
+                  onClick={() => setActiveTab("promotions")}
+                  className={`flex items-center w-full px-4 py-2 text-sm rounded-md ${
+                    activeTab === "promotions" 
+                      ? "bg-flipkart-blue text-white" 
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  <Tags className="w-5 h-5 mr-3" />
+                  Promotions
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => setActiveTab("reports")}
+                  className={`flex items-center w-full px-4 py-2 text-sm rounded-md ${
+                    activeTab === "reports" 
+                      ? "bg-flipkart-blue text-white" 
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  <FileText className="w-5 h-5 mr-3" />
+                  Reports
+                </button>
+              </li>
+              <li>
+                <button 
                   onClick={() => setActiveTab("access_logs")}
                   className={`flex items-center w-full px-4 py-2 text-sm rounded-md ${
                     activeTab === "access_logs" 
@@ -311,6 +442,32 @@ const AdminPanel = () => {
                 >
                   <Clock className="w-5 h-5 mr-3" />
                   Access Logs
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => setActiveTab("settings")}
+                  className={`flex items-center w-full px-4 py-2 text-sm rounded-md ${
+                    activeTab === "settings" 
+                      ? "bg-flipkart-blue text-white" 
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  <Settings className="w-5 h-5 mr-3" />
+                  Settings
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => setActiveTab("payment_history")}
+                  className={`flex items-center w-full px-4 py-2 text-sm rounded-md ${
+                    activeTab === "payment_history" 
+                      ? "bg-flipkart-blue text-white" 
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  <FileText className="w-5 h-5 mr-3" />
+                  Payment History
                 </button>
               </li>
             </ul>
@@ -333,14 +490,22 @@ const AdminPanel = () => {
                 {activeTab === "products" && "Product Management"}
                 {activeTab === "orders" && "Order Management"}
                 {activeTab === "delivery" && "Delivery Management"}
+                {activeTab === "promotions" && "Promotions"}
+                {activeTab === "reports" && "Reports"}
                 {activeTab === "access_logs" && "Access Logs"}
+                {activeTab === "settings" && "Settings"}
+                {activeTab === "payment_history" && "Payment History"}
               </h1>
               <p className="text-gray-500">
                 {activeTab === "dashboard" && "Overview of your store's performance"}
                 {activeTab === "products" && "Manage your product catalog"}
                 {activeTab === "orders" && "View and manage customer orders"}
                 {activeTab === "delivery" && "Track and manage deliveries"}
+                {activeTab === "promotions" && "Manage special offers and discounts"}
+                {activeTab === "reports" && "View sales and performance reports"}
                 {activeTab === "access_logs" && "Track admin access history"}
+                {activeTab === "settings" && "Configure admin panel settings"}
+                {activeTab === "payment_history" && "View payment transaction history"}
               </p>
             </div>
 
@@ -365,7 +530,11 @@ const AdminPanel = () => {
           {activeTab === "products" && renderProducts()}
           {activeTab === "orders" && renderOrders()}
           {activeTab === "delivery" && renderDelivery()}
+          {activeTab === "promotions" && renderPromotions()}
+          {activeTab === "reports" && renderReports()}
           {activeTab === "access_logs" && renderAccessLogs()}
+          {activeTab === "settings" && renderSettings()}
+          {activeTab === "payment_history" && renderPaymentHistory()}
         </main>
       </div>
     </div>

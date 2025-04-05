@@ -1,4 +1,3 @@
-
 import { Product, Category, Banner } from "../types";
 
 // Initial products data
@@ -15,6 +14,29 @@ export const products: Product[] = [
     category: "tshirts"
   },
   {
+    id: 10,
+    title: "Men's Plain Black Cotton T-Shirt",
+    price: 399,
+    originalPrice: 799,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.5,
+    ratingCount: 2890,
+    category: "tshirts"
+  },
+  {
+    id: 11,
+    title: "Men's White Basic Round Neck T-Shirt",
+    price: 349,
+    originalPrice: 699,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.2,
+    ratingCount: 1876,
+    category: "tshirts"
+  },
+  
+  {
     id: 2,
     title: "Women's Floral Print Summer Dress",
     price: 799,
@@ -25,6 +47,29 @@ export const products: Product[] = [
     ratingCount: 2187,
     category: "dresses"
   },
+  {
+    id: 12,
+    title: "Women's Red Cocktail Party Dress",
+    price: 1299,
+    originalPrice: 2599,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.6,
+    ratingCount: 1543,
+    category: "dresses"
+  },
+  {
+    id: 13,
+    title: "Women's Casual Maxi Dress",
+    price: 899,
+    originalPrice: 1799,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.3,
+    ratingCount: 1109,
+    category: "dresses"
+  },
+  
   {
     id: 3,
     title: "Men's Denim Slim Fit Jeans",
@@ -37,6 +82,29 @@ export const products: Product[] = [
     category: "jeans"
   },
   {
+    id: 14,
+    title: "Women's High-Rise Skinny Jeans",
+    price: 999,
+    originalPrice: 1999,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.4,
+    ratingCount: 2543,
+    category: "jeans"
+  },
+  {
+    id: 15,
+    title: "Men's Regular Fit Blue Jeans",
+    price: 799,
+    originalPrice: 1599,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1475178626620-a4d074967452?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.1,
+    ratingCount: 1897,
+    category: "jeans"
+  },
+  
+  {
     id: 4,
     title: "Women's Hooded Sweatshirt",
     price: 699,
@@ -46,7 +114,63 @@ export const products: Product[] = [
     rating: 4.4,
     ratingCount: 1243,
     category: "hoodies"
-  }
+  },
+  {
+    id: 16,
+    title: "Men's Pullover Hoodie Black",
+    price: 799,
+    originalPrice: 1599,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1609873814058-a8928924184a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.5,
+    ratingCount: 2134,
+    category: "hoodies"
+  },
+  {
+    id: 17,
+    title: "Unisex Zip-Up Hooded Sweatshirt",
+    price: 899,
+    originalPrice: 1799,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1556172732-049461e80726?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.2,
+    ratingCount: 1765,
+    category: "hoodies"
+  },
+  
+  {
+    id: 18,
+    title: "Kids Cartoon Print T-shirt",
+    price: 299,
+    originalPrice: 599,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.6,
+    ratingCount: 987,
+    category: "kids"
+  },
+  {
+    id: 19,
+    title: "Kids Denim Dungarees",
+    price: 599,
+    originalPrice: 1199,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1522771930-78848d9293e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.3,
+    ratingCount: 765,
+    category: "kids"
+  },
+  {
+    id: 20,
+    title: "Kids Winter Jacket with Hood",
+    price: 799,
+    originalPrice: 1599,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.5,
+    ratingCount: 876,
+    category: "kids"
+  },
 ];
 
 export const categories: Category[] = [
