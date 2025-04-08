@@ -17,6 +17,10 @@ const Index = () => {
   const [jeans, setJeans] = useState<typeof products>([]);
   const [dresses, setDresses] = useState<typeof products>([]);
   const [kids, setKids] = useState<typeof products>([]);
+  const [shirts, setShirts] = useState<typeof products>([]);
+  const [outerwear, setOuterwear] = useState<typeof products>([]);
+  const [activewear, setActivewear] = useState<typeof products>([]);
+  const [accessories, setAccessories] = useState<typeof products>([]);
 
   useEffect(() => {
     // Populate products by categories using the store
@@ -25,6 +29,10 @@ const Index = () => {
     setJeans(getProductsByCategory("jeans"));
     setDresses(getProductsByCategory("dresses"));
     setKids(getProductsByCategory("kids"));
+    setShirts(getProductsByCategory("shirts"));
+    setOuterwear(getProductsByCategory("outerwear"));
+    setActivewear(getProductsByCategory("activewear"));
+    setAccessories(getProductsByCategory("accessories"));
   }, [products, getProductsByCategory]);
 
   return (
@@ -73,6 +81,38 @@ const Index = () => {
               title="Kids Collection" 
               products={kids} 
               viewAllLink="/categories/kids" 
+            />
+          )}
+          
+          {shirts.length > 0 && (
+            <ProductSection 
+              title="Shirts" 
+              products={shirts} 
+              viewAllLink="/categories/shirts" 
+            />
+          )}
+          
+          {outerwear.length > 0 && (
+            <ProductSection 
+              title="Outerwear" 
+              products={outerwear} 
+              viewAllLink="/categories/outerwear" 
+            />
+          )}
+          
+          {activewear.length > 0 && (
+            <ProductSection 
+              title="Activewear" 
+              products={activewear} 
+              viewAllLink="/categories/activewear" 
+            />
+          )}
+          
+          {accessories.length > 0 && (
+            <ProductSection 
+              title="Accessories" 
+              products={accessories} 
+              viewAllLink="/categories/accessories" 
             />
           )}
         </div>

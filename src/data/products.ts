@@ -171,6 +171,117 @@ export const products: Product[] = [
     ratingCount: 876,
     category: "kids"
   },
+  
+  {
+    id: 21,
+    title: "Men's Formal Button-Down Shirt",
+    price: 899,
+    originalPrice: 1799,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1602810316693-3667c854239a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.4,
+    ratingCount: 1245,
+    category: "shirts"
+  },
+  {
+    id: 22,
+    title: "Men's Casual Checked Shirt",
+    price: 799,
+    originalPrice: 1599,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.3,
+    ratingCount: 976,
+    category: "shirts"
+  },
+  {
+    id: 23,
+    title: "Women's Printed Graphic T-Shirt",
+    price: 449,
+    originalPrice: 899,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.5,
+    ratingCount: 1689,
+    category: "tshirts"
+  },
+  {
+    id: 24,
+    title: "Women's Denim Jacket",
+    price: 1299,
+    originalPrice: 2599,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.6,
+    ratingCount: 892,
+    category: "outerwear"
+  },
+  {
+    id: 25,
+    title: "Men's Leather Jacket",
+    price: 2499,
+    originalPrice: 4999,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1520975954732-35dd22299614?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.7,
+    ratingCount: 765,
+    category: "outerwear"
+  },
+  {
+    id: 26,
+    title: "Women's Yoga Pants",
+    price: 699,
+    originalPrice: 1399,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.4,
+    ratingCount: 2134,
+    category: "activewear"
+  },
+  {
+    id: 27,
+    title: "Men's Athletic Shorts",
+    price: 499,
+    originalPrice: 999,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.3,
+    ratingCount: 1543,
+    category: "activewear"
+  },
+  {
+    id: 28,
+    title: "Kids Party Dress",
+    price: 899,
+    originalPrice: 1799,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.7,
+    ratingCount: 432,
+    category: "kids"
+  },
+  {
+    id: 29,
+    title: "Kids Sports Shoes",
+    price: 699,
+    originalPrice: 1399,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.4,
+    ratingCount: 567,
+    category: "kids"
+  },
+  {
+    id: 30,
+    title: "Women's Summer Hat",
+    price: 399,
+    originalPrice: 799,
+    discountPercentage: 50,
+    image: "https://images.unsplash.com/photo-1565839534376-8dd9e7582d14?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    rating: 4.2,
+    ratingCount: 432,
+    category: "accessories"
+  }
 ];
 
 export const categories: Category[] = [
@@ -182,7 +293,9 @@ export const categories: Category[] = [
   { id: 6, name: "Shirts", image: "https://images.unsplash.com/photo-1602810316693-3667c854239a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
   { id: 7, name: "Jeans", image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
   { id: 8, name: "Dresses", image: "https://images.unsplash.com/photo-1623609163859-ca93c959b5b8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
-  { id: 9, name: "Accessories", image: "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" }
+  { id: 9, name: "Accessories", image: "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 10, name: "Outerwear", image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 11, name: "Activewear", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" }
 ];
 
 export const banners: Banner[] = [
@@ -206,7 +319,6 @@ export const banners: Banner[] = [
   }
 ];
 
-// This function is now handled by the ProductStore
 export const productsByCategory = (category: string) => {
   return products.filter(product => product.category === category);
 };
