@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -8,7 +8,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User, Phone, MapPin } from "lucide-react";
+import { User, Phone, MapPin, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 // Form validation schemas
@@ -129,7 +129,14 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-flipkart-bg-light flex flex-col">
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-md w-full max-w-md overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md w-full max-w-md overflow-hidden relative">
+          <Link 
+            to="/" 
+            className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <X className="h-5 w-5 text-gray-500" />
+          </Link>
+          
           <div className="bg-flipkart-blue p-6 text-white">
             <h1 className="text-2xl font-bold">
               {step === 1 ? "Login or Signup" : 
