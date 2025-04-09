@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -129,16 +130,16 @@ const Login = () => {
     <div className="min-h-screen bg-flipkart-bg-light flex flex-col">
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-md w-full max-w-md overflow-hidden relative">
-          <div className="flex justify-between items-center absolute top-4 right-4 left-4">
+          <div className="flex justify-between items-center absolute top-4 right-4 left-4 z-10">
             <Link to="/" className="flex items-center gap-1 text-flipkart-blue hover:underline">
               <Store className="h-4 w-4" />
               <span className="text-sm">Back to Store</span>
             </Link>
             <Link 
               to="/" 
-              className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+              className="p-1.5 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
             >
-              <X className="h-5 w-5 text-gray-500" />
+              <X className="h-5 w-5 text-gray-700" />
             </Link>
           </div>
           

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -7,14 +6,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ShoppingCart, Trash2 } from 'lucide-react';
 
 const Wishlist = () => {
-  // Sample wishlist data
+  // Sample wishlist data with reliable images
   const wishlistItems = [
     {
       id: 1,
       name: 'Premium Cotton T-Shirt',
       price: 24.99,
       originalPrice: 34.99,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=500&q=80',
       inStock: true,
     },
     {
@@ -22,7 +21,7 @@ const Wishlist = () => {
       name: 'Slim Fit Denim Jeans',
       price: 49.99,
       originalPrice: 69.99,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=500&q=80',
       inStock: true,
     },
     {
@@ -30,7 +29,7 @@ const Wishlist = () => {
       name: 'Casual Sneakers',
       price: 79.99,
       originalPrice: 99.99,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=500&q=80',
       inStock: false,
     },
     {
@@ -38,7 +37,7 @@ const Wishlist = () => {
       name: 'Classic Watch',
       price: 129.99,
       originalPrice: 159.99,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=500&q=80',
       inStock: true,
     },
   ];
