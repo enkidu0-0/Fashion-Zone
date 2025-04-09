@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { 
   MessageSquare, 
@@ -17,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Message = {
   id: string;
@@ -35,7 +34,6 @@ const INITIAL_MESSAGES: Message[] = [
   }
 ];
 
-// Pre-defined responses for common questions
 const AUTO_RESPONSES: Record<string, string> = {
   shipping: "Standard shipping takes 3-5 business days. Express shipping is available for 1-2 business days at an additional cost.",
   return: "Our return policy allows items to be returned within 30 days of delivery for a full refund. Items must be unworn with tags attached.",
@@ -53,9 +51,8 @@ const ChatBot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
-  // Auto-scroll to the bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -63,7 +60,6 @@ const ChatBot = () => {
   const handleSend = () => {
     if (!input.trim()) return;
     
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       content: input.trim(),
@@ -75,9 +71,7 @@ const ChatBot = () => {
     setInput("");
     setIsTyping(true);
     
-    // Simulate AI typing delay
     setTimeout(() => {
-      // Check for predefined responses
       const response = getAutoResponse(input.toLowerCase());
       
       const botMessage: Message = {
@@ -93,7 +87,6 @@ const ChatBot = () => {
   };
 
   const getAutoResponse = (query: string): string => {
-    // Check for keywords in the query
     if (query.includes("shipping") || query.includes("delivery")) {
       return AUTO_RESPONSES.shipping;
     } else if (query.includes("return") || query.includes("refund")) {
@@ -178,7 +171,6 @@ const ChatBot = () => {
     </div>
   );
 
-  // Use Dialog for desktop and Drawer for mobile
   return (
     <>
       {isMobile ? (
