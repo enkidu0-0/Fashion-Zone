@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { 
   MessageSquare, 
@@ -25,6 +26,10 @@ type Message = {
   timestamp: Date;
 };
 
+type ChatBotProps = {
+  embedded?: boolean;
+};
+
 const INITIAL_MESSAGES: Message[] = [
   {
     id: 'welcome',
@@ -44,7 +49,7 @@ const AUTO_RESPONSES: Record<string, string> = {
   exchange: "To exchange an item, please return it and place a new order. This ensures you get the item you want before it sells out.",
 };
 
-const ChatBot = () => {
+const ChatBot = ({ embedded = false }: ChatBotProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
@@ -163,7 +168,7 @@ const ChatBot = () => {
             placeholder="Type your message..."
             className="flex-1"
           />
-          <Button type="submit" size="icon">
+          <Button type="submit" size="icon" className="bg-flipkart-blue hover:bg-blue-600">
             <Send className="h-4 w-4" />
           </Button>
         </form>
@@ -171,6 +176,12 @@ const ChatBot = () => {
     </div>
   );
 
+  // If embedded, directly render chat interface
+  if (embedded) {
+    return <ChatContent />;
+  }
+
+  // Regular floating button interface
   return (
     <>
       {isMobile ? (
@@ -179,19 +190,23 @@ const ChatBot = () => {
             <Button 
               variant="default" 
               size="icon"
-              className="fixed bottom-4 right-4 h-12 w-12 rounded-full shadow-lg bg-flipkart-blue hover:bg-blue-600"
+              className="fixed bottom-4 right-4 h-14 w-14 rounded-full shadow-lg bg-flipkart-blue hover:bg-blue-600 animate-pulse"
             >
-              <MessageSquare className="h-6 w-6" />
+              <MessageSquare className="h-7 w-7" />
             </Button>
           </DrawerTrigger>
           <DrawerContent className="h-[85vh]">
-            <div className="px-4 py-3 border-b">
+            <div className="px-4 py-3 border-b bg-flipkart-blue text-white">
               <div className="flex justify-between items-center">
-                <h3 className="font-medium">Customer Support</h3>
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5" />
+                  <h3 className="font-medium">Fashion Zone Support</h3>
+                </div>
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={() => setIsOpen(false)}
+                  className="text-white hover:bg-blue-600"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -208,16 +223,19 @@ const ChatBot = () => {
             <Button 
               variant="default" 
               size="icon"
-              className="fixed bottom-4 right-4 h-12 w-12 rounded-full shadow-lg bg-flipkart-blue hover:bg-blue-600"
+              className="fixed bottom-4 right-4 h-14 w-14 rounded-full shadow-lg bg-flipkart-blue hover:bg-blue-600 animate-pulse"
             >
-              <MessageSquare className="h-6 w-6" />
+              <MessageSquare className="h-7 w-7" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-full max-w-md h-[500px]">
-            <DialogHeader>
-              <DialogTitle>Customer Support</DialogTitle>
+          <DialogContent className="w-full max-w-md h-[550px]">
+            <DialogHeader className="bg-flipkart-blue text-white -m-6 mb-0 p-4 rounded-t-lg">
+              <DialogTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Fashion Zone Support
+              </DialogTitle>
             </DialogHeader>
-            <div className="h-full overflow-hidden">
+            <div className="h-full overflow-hidden mt-6">
               <ChatContent />
             </div>
           </DialogContent>
