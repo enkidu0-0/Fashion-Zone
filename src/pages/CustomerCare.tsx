@@ -3,7 +3,9 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ChatBot from "../components/ChatBot";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageSquare, Users } from "lucide-react";
+import { MessageSquare, Users, Store } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const CustomerCare = () => {
   return (
@@ -16,6 +18,15 @@ const CustomerCare = () => {
             <p className="text-flipkart-text-secondary max-w-2xl mx-auto">
               Get instant assistance with our AI-powered chat support or connect with our customer service team.
             </p>
+          </div>
+
+          <div className="flex justify-center mb-6">
+            <Link to="/">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Store className="h-4 w-4" />
+                Back to Store
+              </Button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">

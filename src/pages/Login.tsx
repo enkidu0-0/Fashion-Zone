@@ -8,7 +8,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User, Phone, MapPin, X } from "lucide-react";
+import { User, Phone, MapPin, X, Store } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 // Form validation schemas
@@ -130,14 +130,20 @@ const Login = () => {
     <div className="min-h-screen bg-flipkart-bg-light flex flex-col">
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-md w-full max-w-md overflow-hidden relative">
-          <Link 
-            to="/" 
-            className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <X className="h-5 w-5 text-gray-500" />
-          </Link>
+          <div className="flex justify-between items-center absolute top-4 right-4 left-4">
+            <Link to="/" className="flex items-center gap-1 text-flipkart-blue hover:underline">
+              <Store className="h-4 w-4" />
+              <span className="text-sm">Back to Store</span>
+            </Link>
+            <Link 
+              to="/" 
+              className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X className="h-5 w-5 text-gray-500" />
+            </Link>
+          </div>
           
-          <div className="bg-flipkart-blue p-6 text-white">
+          <div className="bg-flipkart-blue p-6 text-white pt-16">
             <h1 className="text-2xl font-bold">
               {step === 1 ? "Login or Signup" : 
                step === 2 ? "Verify OTP" : 

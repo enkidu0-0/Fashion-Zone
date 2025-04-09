@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
-import { Search, ShoppingCart, ChevronDown, User, Heart, Bell, Shield, MessageSquare } from "lucide-react";
+import { Search, ShoppingCart, ChevronDown, User, Heart, Bell, Shield, MessageSquare, Store } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -66,11 +66,6 @@ const Header = () => {
         </div>
 
         <nav className="ml-auto flex items-center gap-5">
-          <Link to="/customer-care" className="flex items-center gap-1">
-            <MessageSquare className="w-5 h-5" />
-            <span className="hidden md:inline">Chat Support</span>
-          </Link>
-
           <div 
             className="relative group cursor-pointer"
             onMouseEnter={() => handleDropdownEnter('user')}
@@ -137,6 +132,12 @@ const Header = () => {
                 onMouseLeave={handleDropdownLeave}
               >
                 <ul className="py-1">
+                  <li>
+                    <Link to="/customer-care" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition-colors duration-150">
+                      <MessageSquare className="w-4 h-4 text-flipkart-blue" /> 
+                      <span className="text-sm">Chat Support</span>
+                    </Link>
+                  </li>
                   <li>
                     <Link to="/notification-preferences" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition-colors duration-150">
                       <Bell className="w-4 h-4 text-flipkart-blue" /> 
