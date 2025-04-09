@@ -11,6 +11,7 @@ import CategoryPage from "./pages/CategoryPage";
 import Login from "./pages/Login";
 import LocationEnabler from "./components/LocationEnabler";
 import AdminPanel from "./pages/AdminPanel";
+import CustomerCare from "./pages/CustomerCare";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Login />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/customer-care" element={<CustomerCare />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
