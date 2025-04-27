@@ -1,130 +1,117 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User, Phone, MapPin, X, Store } from "lucide-react";
+import { User, Lock, X, Store } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { getAndClearReturnPath } from "@/utils/auth";
+import { isTOTPSetup } from "@/utils/totp";
+import TOTPVerify from "@/components/admin/TOTPVerify";
 
-// Form validation schemas
-const phoneSchema = z.object({
-  phone: z.string().min(10, "Phone number must be at least 10 digits").max(10, "Phone number must not exceed 10 digits"),
+const loginSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const otpSchema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
-});
-
-const usernameSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-});
+interface UserData {
+  name: string;
+  password: string;
+  phone: string;
+  registeredAt: string;
+}
 
 const Login = () => {
-  const [step, setStep] = useState(1);
-  const [isNewUser, setIsNewUser] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [userPhone, setUserPhone] = useState("");
+  const [showTOTPVerify, setShowTOTPVerify] = useState(false);
+  const [pendingAdminLogin, setPendingAdminLogin] = useState<{name: string, phone: string} | null>(null);
 
-  // Phone number form
-  const phoneForm = useForm<z.infer<typeof phoneSchema>>({
-    resolver: zodResolver(phoneSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      phone: "",
+      name: "",
+      password: "",
     },
   });
 
-  // OTP form
-  const otpForm = useForm<z.infer<typeof otpSchema>>({
-    resolver: zodResolver(otpSchema),
-    defaultValues: {
-      otp: "",
-    },
-  });
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    // Get all users from local storage
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    
+    // Find user by name
+    const userEntry = Object.entries(users).find(([_, userData]) => 
+      (userData as UserData).name.toLowerCase() === values.name.toLowerCase()
+    );
 
-  // Username form
-  const usernameForm = useForm<z.infer<typeof usernameSchema>>({
-    resolver: zodResolver(usernameSchema),
-    defaultValues: {
-      username: "",
-    },
-  });
-
-  // Handle phone number submission
-  const onPhoneSubmit = (values: z.infer<typeof phoneSchema>) => {
-    setUserPhone(values.phone);
-    
-    // Check if the user exists in local storage
-    const existingUsers = JSON.parse(localStorage.getItem("users") || "{}");
-    const userExists = existingUsers[values.phone];
-    
-    setIsNewUser(!userExists);
-    setStep(2); // Move to OTP step
-    
-    // In a real app, you would send an OTP to the phone number here
-    toast({
-      title: "OTP Sent",
-      description: `A verification code has been sent to ${values.phone}`,
-    });
-  };
-
-  // Handle OTP verification
-  const onOtpSubmit = (values: z.infer<typeof otpSchema>) => {
-    // In a real app, you would verify the OTP with a backend service
-    // For this demo, we'll accept any 6-digit OTP
-    
-    if (isNewUser) {
-      setStep(3); // Move to username step for new users
-    } else {
-      // For existing users, log them in directly
-      const existingUsers = JSON.parse(localStorage.getItem("users") || "{}");
-      const userData = existingUsers[userPhone];
-      
-      if (userData) {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("currentUser", JSON.stringify({
-          phone: userPhone,
-          username: userData.username
-        }));
-        
-        toast({
-          title: "Login Successful",
-          description: `Welcome back, ${userData.username}!`,
-        });
-        
-        navigate("/");
-      }
+    if (!userEntry) {
+      toast({
+        title: "Login Failed",
+        description: "User not found. Please check your name or sign up.",
+        variant: "destructive",
+      });
+      return;
     }
+
+    const [phone, userData] = userEntry as [string, UserData];
+
+    // Check password
+    if (userData.password !== values.password) {
+      toast({
+        title: "Login Failed",
+        description: "Incorrect password. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // If this is an admin login and 2FA is set up
+    if (values.name.toLowerCase() === 'admin' && isTOTPSetup()) {
+      setPendingAdminLogin({ name: userData.name, phone });
+      setShowTOTPVerify(true);
+      return;
+    }
+
+    // Regular user login or admin without 2FA
+    completeLogin(userData.name, phone);
   };
 
-  // Handle username submission for new users
-  const onUsernameSubmit = (values: z.infer<typeof usernameSchema>) => {
-    // Save the new user to local storage
-    const existingUsers = JSON.parse(localStorage.getItem("users") || "{}");
-    existingUsers[userPhone] = {
-      username: values.username,
-      registeredAt: new Date().toISOString()
-    };
-    
-    localStorage.setItem("users", JSON.stringify(existingUsers));
+  const completeLogin = (name: string, phone: string) => {
     localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("currentUser", JSON.stringify({
-      phone: userPhone,
-      username: values.username
-    }));
+    localStorage.setItem("currentUser", JSON.stringify({ phone, name }));
     
     toast({
-      title: "Registration Successful",
-      description: `Welcome to Fashion Zone, ${values.username}!`,
+      title: "Login Successful",
+      description: `Welcome back, ${name}!`,
     });
-    
-    navigate("/");
+
+    // Navigate to the return path or home
+    const returnPath = getAndClearReturnPath();
+    navigate(returnPath);
   };
+
+  if (showTOTPVerify && pendingAdminLogin) {
+    return (
+      <div className="min-h-screen bg-flipkart-bg-light flex flex-col">
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-md w-full max-w-md p-6">
+            <TOTPVerify
+              onVerified={() => {
+                completeLogin(pendingAdminLogin.name, pendingAdminLogin.phone);
+              }}
+              onCancel={() => {
+                setShowTOTPVerify(false);
+                setPendingAdminLogin(null);
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-flipkart-bg-light flex flex-col">
@@ -144,124 +131,67 @@ const Login = () => {
           </div>
           
           <div className="bg-flipkart-blue p-6 text-white pt-16">
-            <h1 className="text-2xl font-bold">
-              {step === 1 ? "Login or Signup" : 
-               step === 2 ? "Verify OTP" : 
-               "Create Username"}
-            </h1>
+            <h1 className="text-2xl font-bold">Login</h1>
             <p className="mt-1 text-sm opacity-80">
-              {step === 1 ? "Enter your phone number to continue" : 
-               step === 2 ? "Enter the 6-digit code sent to your phone" : 
-               "Choose a username for your account"}
+              Welcome back! Please enter your details
             </p>
           </div>
           
           <div className="p-6">
-            {step === 1 && (
-              <Form {...phoneForm}>
-                <form onSubmit={phoneForm.handleSubmit(onPhoneSubmit)} className="space-y-6">
-                  <FormField
-                    control={phoneForm.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <div className="relative">
-                          <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <FormControl>
-                            <Input 
-                              placeholder="10-digit mobile number" 
-                              className="pl-10" 
-                              {...field} 
-                              type="tel" 
-                              maxLength={10}
-                            />
-                          </FormControl>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit" className="w-full bg-flipkart-orange hover:bg-flipkart-orange/90">
-                    Continue
-                  </Button>
-                </form>
-              </Form>
-            )}
-            
-            {step === 2 && (
-              <Form {...otpForm}>
-                <form onSubmit={otpForm.handleSubmit(onOtpSubmit)} className="space-y-6">
-                  <FormField
-                    control={otpForm.control}
-                    name="otp"
-                    render={({ field }) => (
-                      <FormItem className="space-y-4">
-                        <FormLabel>Enter OTP</FormLabel>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <div className="relative">
+                        <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <FormControl>
-                          <InputOTP maxLength={6} {...field}>
-                            <InputOTPGroup>
-                              <InputOTPSlot index={0} />
-                              <InputOTPSlot index={1} />
-                              <InputOTPSlot index={2} />
-                              <InputOTPSlot index={3} />
-                              <InputOTPSlot index={4} />
-                              <InputOTPSlot index={5} />
-                            </InputOTPGroup>
-                          </InputOTP>
+                          <Input 
+                            placeholder="Enter your name" 
+                            className="pl-10" 
+                            {...field} 
+                          />
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="text-sm text-center">
-                    <span className="text-gray-600">Didn't receive the OTP? </span>
-                    <button type="button" className="text-flipkart-blue font-medium">Resend OTP</button>
-                  </div>
-                  <Button type="submit" className="w-full bg-flipkart-orange hover:bg-flipkart-orange/90">
-                    Verify OTP
-                  </Button>
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    className="w-full" 
-                    onClick={() => setStep(1)}
-                  >
-                    Change Phone Number
-                  </Button>
-                </form>
-              </Form>
-            )}
-            
-            {step === 3 && (
-              <Form {...usernameForm}>
-                <form onSubmit={usernameForm.handleSubmit(onUsernameSubmit)} className="space-y-6">
-                  <FormField
-                    control={usernameForm.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <div className="relative">
-                          <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <FormControl>
-                            <Input 
-                              placeholder="Enter a username" 
-                              className="pl-10" 
-                              {...field} 
-                            />
-                          </FormControl>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit" className="w-full bg-flipkart-orange hover:bg-flipkart-orange/90">
-                    Create Account
-                  </Button>
-                </form>
-              </Form>
-            )}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <FormControl>
+                          <Input 
+                            type="password"
+                            placeholder="Enter your password" 
+                            className="pl-10" 
+                            {...field} 
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full bg-flipkart-orange hover:bg-flipkart-orange/90">
+                  Login
+                </Button>
+                <div className="text-center text-sm">
+                  Don't have an account?{" "}
+                  <Link to="/signin" className="text-flipkart-blue font-medium hover:underline">
+                    Sign In
+                  </Link>
+                </div>
+              </form>
+            </Form>
           </div>
         </div>
       </div>

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Search, ShoppingCart, ChevronDown, User, Heart, Bell, Shield, MessageSquare, Store } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -46,7 +45,7 @@ const Header = () => {
         <Link to="/" className="mr-4 flex flex-col">
           <span className="text-xl font-bold">Fashion Zone</span>
           <span className="text-xs text-flipkart-yellow flex items-center">
-            Explorer Plus <ChevronDown className="w-3 h-3 ml-1" />
+            PROSENJIT BAIDYA <ChevronDown className="w-3 h-3 ml-1" />
           </span>
         </Link>
 
@@ -87,7 +86,7 @@ const Header = () => {
                 <div className="p-3 border-b border-gray-100">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">New Customer?</span>
-                    <Link to="/signup" className="text-flipkart-blue text-sm font-medium">Sign Up</Link>
+                    <Link to="/signin" className="text-flipkart-blue text-sm font-medium">Sign Up</Link>
                   </div>
                 </div>
                 <ul className="py-1">
@@ -155,7 +154,7 @@ const Header = () => {
             )}
           </div>
 
-          <Link to="#" onClick={handleCartClick} className="flex items-center gap-1">
+          <Link to="/cart" className="flex items-center gap-1">
             <div className="relative">
               <ShoppingCart className="w-5 h-5" />
               {cartCount > 0 && (

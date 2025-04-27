@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -14,15 +13,27 @@ import {
 } from "@/components/ui/dialog";
 import ProductForm from "./ProductForm";
 import ProductsTable from "./ProductsTable";
+import { testConnection } from "../../lib/test-connection";
+import { MigrateButton } from "./MigrateButton";
 
 const ProductsManager = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState<number | null>(null);
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
   
   const { deleteProduct } = useProductStore();
   const { toast } = useToast();
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      const connected = await testConnection();
+      setIsConnected(connected);
+    };
+    
+    checkConnection();
+  }, []);
 
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product);
@@ -47,28 +58,29 @@ const ProductsManager = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-      <div className="p-6 border-b border-gray-100">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-xl font-semibold">Products</h2>
-            <p className="text-gray-500 mt-1">Manage your product catalog</p>
-          </div>
+    <div className="p-8">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Products</h1>
+          <p className="text-gray-500 mt-1">Manage your product catalog</p>
+        </div>
+        <div className="flex gap-2">
+          <MigrateButton />
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-flipkart-blue">
-                <Plus className="w-4 h-4 mr-1" />
-                Add New Product
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Product
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
+            <DialogContent>
               <DialogHeader>
                 <DialogTitle>
                   {editingProduct ? "Edit Product" : "Add New Product"}
                 </DialogTitle>
               </DialogHeader>
-              <ProductForm
-                product={editingProduct || undefined}
+              <ProductForm 
+                product={editingProduct}
                 onSubmit={() => {
                   setIsFormOpen(false);
                   setEditingProduct(null);
@@ -78,13 +90,10 @@ const ProductsManager = () => {
           </Dialog>
         </div>
       </div>
-      
-      <div className="p-6">
-        <ProductsTable 
-          onEdit={handleEditProduct} 
-          onDelete={handleDeleteProduct} 
-        />
-      </div>
+      <ProductsTable 
+        onEdit={handleEditProduct}
+        onDelete={handleDeleteProduct}
+      />
       
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">

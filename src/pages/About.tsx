@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -16,12 +15,13 @@ const About = () => {
             <div className="flex flex-col justify-center">
               <h2 className="text-2xl font-semibold mb-4">Our Story</h2>
               <p className="mb-4 text-gray-700">
-                Fashion Zone was founded in 2015 with a mission to make quality fashion accessible to everyone. 
-                What started as a small online store has grown into one of the largest e-commerce platforms for fashion in the country.
+                Welcome to Fashion Zone, your ultimate destination for stylish, high-quality fashion at unbeatable prices! Curated by the talented Prosenjit Baidya, our e-commerce store offers a wide range of trendy apparel and accessories designed to elevate your wardrobe without breaking the bank.
               </p>
-              <p className="text-gray-700">
-                We believe that everyone deserves to look and feel their best without breaking the bank. 
-                Our team works directly with manufacturers and designers to bring the latest trends to our customers at affordable prices.
+              <p className="mb-4 text-gray-700">
+                From chic everyday wear to standout pieces for special occasions, we prioritize both quality craftsmanship and affordability, ensuring you get the best value for your money. Our commitment to customer satisfaction drives us to deliver exceptional products tailored to your unique style.
+              </p>
+              <p className="mb-4 text-gray-700">
+                Ready to revamp your look? Reach out to us at +7076414186 for personalized assistance or to place your order. At Fashion Zone, we blend fashion-forward designs with pocket-friendly prices, making it easier than ever to stay on-trend. Shop with us today and experience the perfect fusion of quality and affordability!
               </p>
             </div>
             <div className="rounded-lg overflow-hidden shadow-lg">

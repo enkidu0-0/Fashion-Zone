@@ -7,40 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Package, Clock, Check, X, Eye, Download, MessageSquare } from 'lucide-react';
 
 const Orders = () => {
-  const orders = [
-    {
-      id: 'OD123456789',
-      date: '2023-04-01',
-      total: 129.99,
-      items: 2,
-      status: 'Delivered',
-      address: '123 Main St, New York, NY 10001',
-    },
-    {
-      id: 'OD987654321',
-      date: '2023-03-15',
-      total: 79.50,
-      items: 1,
-      status: 'In Transit',
-      address: '456 Oak Ave, Brooklyn, NY 10002',
-    },
-    {
-      id: 'OD456789123',
-      date: '2023-02-28',
-      total: 215.75,
-      items: 3,
-      status: 'Delivered',
-      address: '789 Pine Rd, Queens, NY 10003',
-    },
-    {
-      id: 'OD789123456',
-      date: '2023-01-15',
-      total: 54.25,
-      items: 1,
-      status: 'Cancelled',
-      address: '101 Elm St, Manhattan, NY 10004',
-    },
-  ];
+  const orders = [];  // Removed dummy data
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -167,7 +134,6 @@ const Orders = () => {
               </div>
             </TabsContent>
             
-            {/* Other tab contents would be similar */}
             <TabsContent value="shipped" className="mt-4">
               <div className="text-center py-12">
                 <Package className="h-16 w-16 mx-auto text-gray-300 mb-4" />

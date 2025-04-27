@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { products } from "../data/products";
@@ -7,6 +6,9 @@ import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { Heart, Star, ShoppingCart, Truck, Package, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
+import { RequireAuth } from "@/components/RequireAuth";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +16,7 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  const { toast } = useToast();
   
   const similarProducts = products.filter(p => 
     p.category === product.category && p.id !== product.id
@@ -27,11 +30,17 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = () => {
-    toast.success("Product added to cart!");
+    toast({
+      title: "Added to Cart",
+      description: "Product has been added to your cart",
+    });
   };
 
   const handleBuyNow = () => {
-    toast.success("Proceeding to checkout!");
+    toast({
+      title: "Proceeding to Checkout",
+      description: "Taking you to secure checkout",
+    });
   };
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
@@ -55,16 +64,25 @@ const ProductDetail = () => {
                     className="w-full h-80 object-contain"
                   />
                 </div>
-                <div className="flex gap-2 justify-center">
-                  <button className="btn-primary flex-1 py-3">
-                    <div className="flex items-center justify-center gap-2">
-                      <ShoppingCart className="w-5 h-5" />
-                      ADD TO CART
+                <div className="flex gap-4 mt-6">
+                  <RequireAuth
+                    onAuthRequired={() => {
+                      toast({
+                        title: "Authentication Required",
+                        description: "Please login or sign up to add items to your cart",
+                      });
+                    }}
+                  >
+                    <div className="flex gap-4 w-full">
+                      <Button variant="outline" className="flex-1" onClick={handleAddToCart}>
+                        <ShoppingCart className="w-5 h-5 mr-2" />
+                        Add to Cart
+                      </Button>
+                      <Button className="flex-1 bg-flipkart-blue hover:bg-flipkart-blue/90 text-white" onClick={handleBuyNow}>
+                        Buy Now
+                      </Button>
                     </div>
-                  </button>
-                  <button className="btn-secondary flex-1 py-3" onClick={handleBuyNow}>
-                    BUY NOW
-                  </button>
+                  </RequireAuth>
                 </div>
               </div>
             </div>
